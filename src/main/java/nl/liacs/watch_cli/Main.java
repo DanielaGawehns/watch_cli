@@ -145,6 +145,7 @@ public class Main {
 
                     final var newWatch = new Smartwatch(uid, conn);
                     newWatch.setName(String.format("Watch %d", watches.size()));
+                    watches.add(newWatch);
                 });
             } catch (IOException e) {
                 e.printStackTrace();
