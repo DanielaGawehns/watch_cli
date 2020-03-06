@@ -6,6 +6,7 @@ public class WatchList extends ArrayList<Smartwatch> {
     public WatchList() {
         super();
     }
+
     /**
      * Find the index of the watch per its ID.
      * @param id The ID of the watch to find.

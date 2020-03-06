@@ -119,6 +119,10 @@ public class Main {
                 break;
             }
 
+            if (line.line().isBlank()) {
+                continue;
+            }
+
             try {
                 executeLine(line);
             } catch (Exception e) {

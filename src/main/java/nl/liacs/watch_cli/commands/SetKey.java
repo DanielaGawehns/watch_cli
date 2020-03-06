@@ -3,10 +3,6 @@ package nl.liacs.watch_cli.commands;
 import java.io.IOException;
 
 import nl.liacs.watch.protocol.types.MessageParameter;
-import nl.liacs.watch.protocol.types.MessageParameterDouble;
-import nl.liacs.watch.protocol.types.MessageParameterInteger;
-import nl.liacs.watch.protocol.types.MessageParameterLong;
-import nl.liacs.watch.protocol.types.MessageParameterString;
 
 public class SetKey implements Command {
     public String getDescription() {
