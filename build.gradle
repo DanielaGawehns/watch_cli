@@ -27,7 +27,7 @@ dependencies {
 
 	implementation group: 'org.jetbrains', name: 'annotations', version: '19.0.0'
 
-	implementation files('../protocol/build/libs/protocol-1.0.jar')
+	implementation group: 'nl.liacs.watch', name: 'protocol'
 }
 
 application {

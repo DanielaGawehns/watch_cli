@@ -8,3 +8,9 @@
  */
 
 rootProject.name = 'nl.liacs.watch_cli'
+
+includeBuild('vendor/java-protocol') {
+	dependencySubstitution {
+		substitute module('nl.liacs.watch:protocol') with project(':')
+	}
+}

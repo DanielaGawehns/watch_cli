@@ -1,0 +1,3 @@
+[submodule "vendor/java-protocol"]
+	path = vendor/java-protocol
+	url = git@git.liacs.nl:softwareengineering_wearables/java-protocol.git
