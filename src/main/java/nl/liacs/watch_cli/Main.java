@@ -1,6 +1,13 @@
 package nl.liacs.watch_cli;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.ServerSocket;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -12,16 +19,17 @@ import org.jline.reader.impl.DefaultParser;
 import org.jline.terminal.TerminalBuilder;
 
 import nl.liacs.watch.protocol.server.ConnectionManager;
+import nl.liacs.watch.protocol.tcpserver.SSLServer;
 import nl.liacs.watch.protocol.tcpserver.Server;
 import nl.liacs.watch.protocol.types.Constants;
 import nl.liacs.watch_cli.commands.Arguments;
 import nl.liacs.watch_cli.commands.Command;
 import nl.liacs.watch_cli.commands.Devices;
 import nl.liacs.watch_cli.commands.GetKey;
+import nl.liacs.watch_cli.commands.Help;
 import nl.liacs.watch_cli.commands.Logs;
 import nl.liacs.watch_cli.commands.SetKey;
 import nl.liacs.watch_cli.commands.Tree;
-import nl.liacs.watch_cli.commands.Help;
 
 public class Main {
     public static ConnectionManager connectionManager;
@@ -61,7 +69,16 @@ public class Main {
         commands.get(cmd).run(args);
     }
 
-    public static void main(String[] args) throws IOException, SQLException {
+    public static void main(String[] args)
+        throws
+            IOException,
+            SQLException,
+            UnrecoverableKeyException,
+            KeyManagementException,
+            KeyStoreException,
+            CertificateException,
+            NoSuchAlgorithmException
+    {
         commands.put("devices", new Devices());
         commands.put("get", new GetKey());
         commands.put("set", new SetKey());
@@ -72,9 +89,29 @@ public class Main {
         Main.database = new Database(null);
         Main.watches = Main.database.getAllWatches();
 
-        var server = Server.createServer(Constants.TcpPort);
+        ServerSocket server;
+        var keystorePath = System.getProperty("keystore.path");
+        if (keystorePath == null) {
+            logger.info("keystore path is not given, unencrypted connections will be used");
 
-        logger.info("running tcp server on port " + Constants.TcpPort);
+            server = Server.createServer(Constants.TcpPort);
+            logger.info("running tcp server on port " + Constants.TcpPort);
+        } else {
+            logger.info(String.format("keystore path is '%s', encrypted connections will be used", keystorePath));
+
+            var fs = new FileInputStream(keystorePath);
+
+            System.out.print("enter password of keystore: ");
+            var password = System.console().readPassword();
+
+            server = SSLServer.createServer(
+                Constants.TcpPort,
+                "TLSv1.2",
+                fs,
+                password
+            );
+            logger.info("running encrypted tcp server on port " + Constants.TcpPort);
+        }
 
         Main.connectionManager = new ConnectionManager(server);
         logger.info("started connection manager");
