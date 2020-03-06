@@ -15,16 +15,17 @@ import nl.liacs.watch_cli.Main;
 
 class Utils {
     @NotNull
-    static WrappedConnection getWatchConnection(String deviceId) {
-        var watch = Main.watches.getWithID(deviceId);
-        if (watch == null) {
-            var msg = String.format("no watch with ID '%s' found", deviceId);
+    static WrappedConnection getWatchConnection(String deviceIndex) {
+        var index = Integer.parseInt(deviceIndex);
+        if (index >= Main.watches.size()) {
+            var msg = String.format("watch index %d is out of bounds", index);
             throw new NoSuchElementException(msg);
         }
+        var watch = Main.watches.get(index);
 
         var connector = watch.getConnector();
         if (connector == null) {
-            var msg = String.format("no connection with watch '%s'", deviceId);
+            var msg = String.format("no connection with watch '%s'", watch.getID());
             throw new IllegalStateException(msg);
         }
 

@@ -16,10 +16,11 @@ public class Devices implements Command {
     }
 
     public void run(Arguments args) {
-        String[] headers = {"ID", "Name", "Connected"};
+        String[] headers = {"Index", "ID", "Name", "Connected"};
         ArrayList<String[]> data = new ArrayList<>();
 
-        for (var watch : Main.watches) {
+        for (int i = 0; i < Main.watches.size(); i++) {
+            var watch = Main.watches.get(i);
             var name = watch.getName();
             if (name == null) {
                 name = "";
@@ -27,7 +28,7 @@ public class Devices implements Command {
 
             var connected = watch.getConnector() != null ? "yes" : "no";
 
-            String[] line = { watch.getID(), name, connected };
+            String[] line = { Integer.toString(i), watch.getID(), name, connected };
             data.add(line);
         }
 
