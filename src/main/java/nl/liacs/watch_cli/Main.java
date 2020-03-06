@@ -29,6 +29,7 @@ import nl.liacs.watch_cli.commands.Command;
 import nl.liacs.watch_cli.commands.Devices;
 import nl.liacs.watch_cli.commands.GetKey;
 import nl.liacs.watch_cli.commands.Help;
+import nl.liacs.watch_cli.commands.Live;
 import nl.liacs.watch_cli.commands.Logs;
 import nl.liacs.watch_cli.commands.SetKey;
 import nl.liacs.watch_cli.commands.Tree;
@@ -88,6 +89,7 @@ public class Main {
         commands.put("tree", new Tree());
         commands.put("logs", new Logs());
         commands.put("help", new Help());
+        commands.put("live", new Live());
 
         Main.database = new Database(null);
         Main.watches = Main.database.getAllWatches();
