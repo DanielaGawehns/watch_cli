@@ -32,7 +32,7 @@ public class Smartwatch {
             try {
                 this.addConnection(conn);
             } catch (IOException e) {
-                // cannot happen
+                // cannot happen, since the connector is null.
             }
         }
     }
