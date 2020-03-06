@@ -36,6 +36,10 @@ public class Logger<T> {
         this.log(Level.INFO, contents);
     }
 
+    public void warning(T contents) {
+        this.log(Level.WARNING, contents);
+    }
+
     public Queue<Item<T>> getItems() {
         return this.items;
     }
