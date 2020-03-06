@@ -21,6 +21,10 @@ public class GetKey implements Command {
         var key = args.getRest().get(1);
 
         var conn = Utils.getWatchConnection(deviceId);
+        if (conn == null) {
+            System.err.println("watch not found or not connected");
+            return;
+        }
 
         CompletableFuture<MessageParameter[]> fut;
         try {

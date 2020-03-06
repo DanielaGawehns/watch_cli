@@ -21,6 +21,10 @@ public class SetKey implements Command {
         var values = rest.subList(2, rest.size());
 
         var conn = Utils.getWatchConnection(deviceId);
+        if (conn == null) {
+            System.err.println("watch not found or not connected");
+            return;
+        }
 
         if (values.size() % 2 == 1) {
             System.err.println("uneven amount of value arguments");

@@ -98,6 +98,10 @@ public class Tree implements Command {
         var deviceId = args.getRest().get(0);
 
         var conn = Utils.getWatchConnection(deviceId);
+        if (conn == null) {
+            System.err.println("watch not found or not connected");
+            return;
+        }
 
         var fut = Tree.getTree(conn, "");
         if (fut == null) {
