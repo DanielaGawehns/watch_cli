@@ -110,7 +110,7 @@ public class WatchConnector implements Closeable {
     private MessageParameter[] getKeyValue(@NotNull String key) {
         if (key.equals("system.name")) { // just to test
             return new MessageParameter[]{
-                new MessageParameterString("nl.liacs.watch-host"),
+                new MessageParameterString(this.getClass().getPackageName()),
             };
         }
 
