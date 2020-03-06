@@ -17,6 +17,7 @@ public class Tree implements Command {
 
     private static class Node {
         String key;
+        String type;
         MessageParameter[] values;
     }
 
@@ -26,14 +27,32 @@ public class Tree implements Command {
     }
 
     @Nullable
-    private static CompletableFuture<MessageParameter[]> getListing(WrappedConnection conn, String namespace) {
+    private static CompletableFuture<String[]> getListing(WrappedConnection conn, String namespace) {
         String key = namespace + ".list";
         if (namespace.isEmpty()) {
             key = "list";
         }
 
         try {
-            return conn.getValues(key);
+            return conn.getValues(key).thenApply(items ->
+                Arrays.stream(items)
+                    .map(i -> i.asString().getValue())
+                    .toArray(String[]::new)
+            );
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private static CompletableFuture<String> getType(WrappedConnection conn, String key) {
+        if (key.isEmpty()) {
+            key = "type";
+        } else {
+            key += ".type";
+        }
+
+        try {
+            return conn.getValues(key).thenApply(param -> param[0].asString().getValue());
         } catch (IOException e) {
             return null;
         }
@@ -50,43 +69,56 @@ public class Tree implements Command {
 
     @Nullable
     private static CompletableFuture<nl.liacs.watch_cli.Tree<Node>> getTree(WrappedConnection conn, String namespace) {
-        var listFut = Tree.getListing(conn, namespace);
-        var valuesFut = Tree.getValues(conn, namespace);
-        if (listFut == null || valuesFut == null) {
+        var typeFut = Tree.getType(conn, namespace);
+        if (typeFut == null) {
             return null;
         }
+        var type = typeFut.join();
 
+        String[] items = new String[0];
+        MessageParameter[] values = new MessageParameter[0];
 
-        return CompletableFuture.allOf(listFut, valuesFut).thenCompose(x -> {
-            var items = listFut.join();
-            var vals = valuesFut.join();
+        if (!type.equals("namespace") && !type.equals("root")) {
+            var valuesFut = Tree.getValues(conn, namespace);
+            if (valuesFut == null) {
+                return null;
+            }
+            values = valuesFut.join();
+        } else {
+            var listFut = Tree.getListing(conn, namespace);
+            if (listFut == null) {
+                return null;
+            }
+            items = listFut.join();
+        }
 
-            var node = new Node();
-            node.key = namespace;
-            node.values = vals;
-            var resTree = new nl.liacs.watch_cli.Tree<Node>(node);
+        var node = new Node();
+        node.key = namespace;
+        node.type = type;
+        node.values = values;
+        var resTree = new nl.liacs.watch_cli.Tree<Node>(node);
 
-            var treeFuts = new ArrayList<CompletableFuture<Void>>();
-            for (var item : items) {
-                var key = item.asString().toString();
+        var treeFuts = new ArrayList<CompletableFuture<Void>>();
+        System.out.printf("len(items): %d\n", items.length);
+        for (var key : items) {
+            System.out.printf("%s\n", key);
 
-                var treeFut = Tree.getTree(conn, key);
-                if (treeFut == null) {
-                    continue;
-                }
-
-                var newFut = treeFut.thenAccept(tree -> resTree.addChild(tree));
-                treeFuts.add(newFut);
+            var treeFut = Tree.getTree(conn, key);
+            if (treeFut == null) {
+                continue;
             }
 
-            var fut = CompletableFuture.allOf(treeFuts.toArray(new CompletableFuture[treeFuts.size()]));
-            return fut.thenApply(y -> resTree);
-        });
+            var newFut = treeFut.thenAccept(tree -> resTree.addChild(tree));
+            treeFuts.add(newFut);
+        }
+
+        var fut = CompletableFuture.allOf(treeFuts.toArray(new CompletableFuture[treeFuts.size()]));
+        return fut.thenApply(y -> resTree);
     }
 
     public static void printTree(nl.liacs.watch_cli.Tree<Node> tree, String prefix) {
         var data = tree.getData();
-        var val = String.join(", ", Arrays.stream(data.values).map(v -> v.toString()).toArray(String[]::new));
+        var val = String.join(", ", Arrays.stream(data.values).map(v -> v.getValue()).toArray(String[]::new));
         System.out.printf("%s%s : %s", prefix, data.key, val);
 
         for (var child : tree.getChildren()) {
