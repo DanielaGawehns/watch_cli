@@ -166,7 +166,8 @@ public class Main {
                             continue;
                         }
 
-                        conn.sendAndWaitReply(new Message(MessageType.PING));
+                        var msg = conn.makeMessageWithID(MessageType.PING);
+                        conn.sendAndWaitReply(msg);
                     }
 
                     Thread.sleep(30 * 1000);
