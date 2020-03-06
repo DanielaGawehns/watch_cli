@@ -123,6 +123,17 @@ public class WatchConnector implements Closeable {
 
     @NotNull
     public WrappedConnection getConnection() {
+        if (this.isClosed()) {
+            return null;
+        }
         return this.connection;
+    }
+
+    public boolean isClosed() {
+        if (this.connection == null) {
+            return true;
+        }
+
+        return this.connection.isClosed();
     }
 }

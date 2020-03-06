@@ -159,6 +159,10 @@ public class Main {
                         }
 
                         var conn = connector.getConnection();
+                        if (conn == null) {
+                            continue;
+                        }
+
                         conn.sendAndWaitReply(new Message(MessageType.PING));
                     }
 
