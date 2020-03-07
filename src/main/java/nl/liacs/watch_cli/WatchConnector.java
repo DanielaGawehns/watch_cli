@@ -121,7 +121,11 @@ public class WatchConnector implements Closeable {
         this.dataObservers.add(runnable);
     }
 
-    @NotNull
+    /**
+     * @return The connection of the current connector, or {@code null} if there
+     * is none.
+     */
+    @Nullable
     public WrappedConnection getConnection() {
         if (this.isClosed()) {
             return null;
@@ -129,6 +133,10 @@ public class WatchConnector implements Closeable {
         return this.connection;
     }
 
+    /**
+     * @return Whether or not the connection of the current connector is closed.
+     * This will return {@code true} if there is no connection.
+     */
     public boolean isClosed() {
         if (this.connection == null) {
             return true;

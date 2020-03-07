@@ -2,6 +2,8 @@ package nl.liacs.watch_cli;
 
 import java.util.ArrayList;
 
+import org.jetbrains.annotations.Nullable;
+
 public class WatchList extends ArrayList<Smartwatch> {
     public WatchList() {
         super();
@@ -24,7 +26,9 @@ public class WatchList extends ArrayList<Smartwatch> {
     /**
      * Get from list
      * @param id Watch ID
+     * @return The watch with the given ID, or {@code null} if not found.
      */
+    @Nullable
     public Smartwatch getWithID(String id){
         int index = this.findWithID(id);
         if (index == -1) {
