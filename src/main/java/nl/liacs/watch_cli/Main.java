@@ -9,7 +9,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.jline.reader.EndOfFileException;
 import org.jline.reader.LineReader;
@@ -38,7 +39,7 @@ public class Main {
     public static ConnectionManager connectionManager;
     public static WatchList watches;
     public static Logger<String> logger = new Logger<>();
-    public static HashMap<String, Command> commands = new HashMap<>();
+    public static SortedMap<String, Command> commands = new TreeMap<>();
     public static Database database;
     private static Thread pingThread;
 
