@@ -9,7 +9,7 @@ import nl.liacs.watch.protocol.types.MessageParameterLong;
 
 public class Live implements Command {
     public String getDescription() {
-        return "Show a live view of all enabled sensors with the given interval of the given devices.  Device IDs are comma delimited";
+        return "Show a live view of all enabled sensors with the given interval of the given devices.\nDevice IDs are comma delimited.";
     }
 
     public boolean checkArguments(Arguments args) {

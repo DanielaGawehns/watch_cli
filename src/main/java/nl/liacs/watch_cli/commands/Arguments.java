@@ -36,13 +36,27 @@ public class Arguments {
         }
     }
 
+    /**
+     * Get the string value with the given {@code key}.
+     * @param key The key of the argument to return.
+     * @return The value of the argument with the given {@code key}. Returns
+     * {@code null} when the given key was not found.
+     */
     @Nullable
     public String getString(String key) {
         return this.args.getOrDefault(key, null);
     }
 
+    /**
+     * Get the value with the given {@code key} as an integer.
+     * @param key The key of the argument to return.
+     * @return The value of the argument with the given {@code key} converted to
+     * an integer. Returns {@code null} when the given key was not found.
+     * @throws NumberFormatException When failing to convert the argument value
+     * to an integer.
+     */
     @Nullable
-    public Integer getInt(String key) {
+    public Integer getInt(String key) throws NumberFormatException {
         var str = this.getString(key);
         if (str == null) {
             return null;

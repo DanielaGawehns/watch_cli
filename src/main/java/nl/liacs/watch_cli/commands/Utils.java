@@ -12,23 +12,35 @@ import nl.liacs.watch.protocol.types.MessageParameterInteger;
 import nl.liacs.watch.protocol.types.MessageParameterLong;
 import nl.liacs.watch.protocol.types.MessageParameterString;
 import nl.liacs.watch_cli.Main;
+import nl.liacs.watch_cli.Smartwatch;
+import nl.liacs.watch_cli.WatchConnector;
 
 class Utils {
     @NotNull
-    static WrappedConnection getWatchConnection(String deviceIndex) {
+    static Smartwatch getWatch(String deviceIndex) {
         var index = Integer.parseInt(deviceIndex);
         if (index >= Main.watches.size()) {
             var msg = String.format("watch index %d is out of bounds", index);
             throw new NoSuchElementException(msg);
         }
-        var watch = Main.watches.get(index);
+        return Main.watches.get(index);
+    }
+
+    @NotNull
+    static WatchConnector getConnector(String deviceIndex) {
+        var watch = getWatch(deviceIndex);
 
         var connector = watch.getConnector();
         if (connector == null) {
             var msg = String.format("no connection with watch '%s'", watch.getID());
             throw new IllegalStateException(msg);
         }
+        return connector;
+    }
 
+    @NotNull
+    static WrappedConnection getWatchConnection(String deviceIndex) {
+        var connector = getConnector(deviceIndex);
         return connector.getConnection();
     }
 
