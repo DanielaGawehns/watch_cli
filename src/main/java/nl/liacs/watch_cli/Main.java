@@ -23,7 +23,6 @@ import nl.liacs.watch.protocol.server.ConnectionManager;
 import nl.liacs.watch.protocol.tcpserver.SSLServer;
 import nl.liacs.watch.protocol.tcpserver.Server;
 import nl.liacs.watch.protocol.types.Constants;
-import nl.liacs.watch.protocol.types.MessageType;
 import nl.liacs.watch_cli.commands.Arguments;
 import nl.liacs.watch_cli.commands.Command;
 import nl.liacs.watch_cli.commands.Devices;
@@ -41,7 +40,6 @@ public class Main {
     public static Logger<String> logger = new Logger<>();
     public static SortedMap<String, Command> commands = new TreeMap<>();
     public static Database database;
-    private static Thread pingThread;
 
     public static LineReader makeReader() throws IOException {
         var terminal = TerminalBuilder.builder().build();
@@ -154,34 +152,6 @@ public class Main {
             }
         });
 
-        pingThread = new Thread(() -> {
-            while (true) {
-                try {
-                    for (var watch : Main.watches) {
-                        var connector = watch.getConnector();
-                        if (connector == null) {
-                            continue;
-                        }
-
-                        var conn = connector.getConnection();
-                        if (conn == null) {
-                            continue;
-                        }
-
-                        var msg = conn.makeMessageWithID(MessageType.PING);
-                        conn.sendAndWaitReply(msg);
-                    }
-
-                    Thread.sleep(30 * 1000);
-                } catch (IOException e) {
-                    logger.warning(e.toString());
-                } catch (InterruptedException e) {
-                    return;
-                }
-            }
-        });
-        pingThread.start();
-
         var reader = makeReader();
         while (true) {
             ParsedLine line;
@@ -203,7 +173,6 @@ public class Main {
             }
         }
 
-        pingThread.interrupt();
         Main.connectionManager.close();
     }
 }
