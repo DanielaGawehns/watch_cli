@@ -27,6 +27,7 @@ import nl.liacs.watch.protocol.types.MessageType;
 import nl.liacs.watch_cli.commands.Arguments;
 import nl.liacs.watch_cli.commands.Command;
 import nl.liacs.watch_cli.commands.Devices;
+import nl.liacs.watch_cli.commands.Export;
 import nl.liacs.watch_cli.commands.GetKey;
 import nl.liacs.watch_cli.commands.Help;
 import nl.liacs.watch_cli.commands.Live;
@@ -90,6 +91,7 @@ public class Main {
         commands.put("logs", new Logs());
         commands.put("help", new Help());
         commands.put("live", new Live());
+        commands.put("export", new Export());
 
         Main.database = new Database(null);
         Main.watches = Main.database.getAllWatches();
