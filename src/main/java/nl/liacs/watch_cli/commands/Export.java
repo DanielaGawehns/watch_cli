@@ -80,13 +80,7 @@ public class Export implements Command {
             outPath = args.getString("output");
         }
 
-        var watches = args.getRest()
-            .stream()
-            .map(i -> Utils.getWatch(i))
-            .collect(Collectors.toList());
-        if (watches.isEmpty()) {
-            watches = Main.watches;
-        }
+        var watches = Utils.getWatchesFromIndicesOrAll(args.getRest());
 
         OutputStream out;
         boolean mustClose;

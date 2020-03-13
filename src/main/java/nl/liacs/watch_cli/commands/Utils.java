@@ -1,6 +1,9 @@
 package nl.liacs.watch_cli.commands;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -60,5 +63,25 @@ class Utils {
         }
 
         return null;
+    }
+
+    /**
+     * Returns the watches with the given watch indices.
+     * If the indices list is empty, all watches known are returned.
+     * @param ids The list of watch indices.
+     * @return The watches that match the watch indices, or all if no indices
+     * are given.
+     */
+    static List<Smartwatch> getWatchesFromIndicesOrAll(Collection<String> ids) {
+        var watches = ids
+            .stream()
+            .map(i -> Utils.getWatch(i))
+            .collect(Collectors.toList());
+
+        if (watches.isEmpty()) {
+            watches = Main.watches;
+        }
+
+        return watches;
     }
 }
