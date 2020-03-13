@@ -27,6 +27,7 @@ public class Arguments {
                 } else if (arg.startsWith("--")) {
                     String key = arg.substring(2);
                     this.args.put(key, raw.get(i + 1));
+                    i++;
                     continue;
                 }
             }
