@@ -1,6 +1,10 @@
 package nl.liacs.watch_cli;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,6 +18,7 @@ public class Smartwatch {
     private String id;
     private String name;
     private WatchConnector connector = null;
+    private final ArrayList<Datapoint> datapoints = new ArrayList<>();
 
     /**
      * @return The ID of the current watch.
@@ -73,5 +78,13 @@ public class Smartwatch {
             this.connector.close();
         }
         this.connector = new WatchConnector(this, connection);
+    }
+
+    public void addDatapoints(Collection<Datapoint> datapoint) {
+        this.datapoints.addAll(datapoint);
+    }
+
+    public List<Datapoint> getDatapoints() {
+        return Collections.unmodifiableList(this.datapoints);
     }
 }
