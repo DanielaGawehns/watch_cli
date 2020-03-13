@@ -1,15 +1,6 @@
 package nl.liacs.watch_cli.commands;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.concurrent.CompletableFuture;
-
-import org.jetbrains.annotations.Nullable;
-
 import nl.liacs.watch_cli.Main;
-import nl.liacs.watch.protocol.server.WrappedConnection;
-import nl.liacs.watch.protocol.types.MessageParameter;
 
 public class Help implements Command {
     public String getDescription() {
@@ -17,15 +8,30 @@ public class Help implements Command {
     }
 
     public boolean checkArguments(Arguments args) {
-        // REVIEW: 0 || 1?
-        return args.getRest().size() == 0;
+        int count = args.getRest().size();
+        return count == 0 || count == 1;
     }
-    public void run(Arguments args) {
-        System.out.println("commands");
 
-        for (var key : Main.commands.keySet()) {
-            var cmd = Main.commands.get(key);
-            System.out.printf("  %s: %s\n", key, cmd.getDescription());
+    public void run(Arguments args) {
+        var rest = args.getRest();
+        if (rest.size() == 0) {
+            System.out.println("commands");
+
+            for (var key : Main.commands.keySet()) {
+                var cmd = Main.commands.get(key);
+                var description = cmd.getDescription();
+                System.out.printf("  %s: %s\n", key, description.split("\n")[0]);
+            }
+            return;
         }
+
+        var cmd = Main.commands.get(rest.get(0));
+        if (cmd == null) {
+            System.err.printf("command '%s' not found\n", rest.get(0));
+            return;
+        }
+
+        System.out.printf("%s\n\n", rest.get(0));
+        System.out.println(cmd.getDescription());
     }
 }
