@@ -1,7 +1,7 @@
 package nl.liacs.watch_cli;
 
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.nio.file.FileAlreadyExistsException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,10 +17,9 @@ class Database {
     /**
      * @return The default path for the database file.
      */
-    static String getDefaultPath() {
-        var home = System.getProperty("user.home");
-        // TODO
-        return Paths.get(home, "watches", "database.db").toString();
+    static String getDefaultPath() throws IOException, FileAlreadyExistsException {
+        var dir = Utils.getDataDir();
+        return dir.resolve("database.db").toString();
     }
 
     /**
