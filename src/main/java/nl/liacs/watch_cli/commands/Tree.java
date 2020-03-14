@@ -103,7 +103,12 @@ public class Tree implements Command {
         for (var key : items) {
             System.out.printf("%s\n", key);
 
-            var treeFut = Tree.getTree(conn, key);
+            String prefix = "";
+            if (!namespace.isEmpty()) {
+                prefix = namespace + ".";
+            }
+
+            var treeFut = Tree.getTree(conn, prefix+key);
             if (treeFut == null) {
                 continue;
             }
@@ -119,7 +124,7 @@ public class Tree implements Command {
     public static void printTree(nl.liacs.watch_cli.Tree<Node> tree, String prefix) {
         var data = tree.getData();
         var val = String.join(", ", Arrays.stream(data.values).map(v -> v.getValue()).toArray(String[]::new));
-        System.out.printf("%s%s : %s", prefix, data.key, val);
+        System.out.printf("%s%s : %s\n", prefix, data.key, val);
 
         for (var child : tree.getChildren()) {
             Tree.printTree(child, prefix + "  ");

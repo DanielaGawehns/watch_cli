@@ -8,7 +8,7 @@ import java.util.List;
  * @param <T> The type of the data on every node.
  */
 public class Tree<T> {
-    private ArrayList<Tree<T>> children;
+    private final ArrayList<Tree<T>> children = new ArrayList<>();
     private final T data;
 
     /**
