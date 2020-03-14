@@ -169,7 +169,7 @@ public class Main {
             try {
                 executeLine(line);
             } catch (Exception e) {
-                System.err.println(e);
+                e.printStackTrace();
             }
         }
 
