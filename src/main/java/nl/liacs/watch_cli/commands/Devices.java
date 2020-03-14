@@ -26,7 +26,7 @@ public class Devices implements Command {
                 name = "";
             }
 
-            var connected = watch.getConnector() != null ? "yes" : "no";
+            var connected = watch.isClosed() ? "no" : "yes";
 
             String[] line = { Integer.toString(i), watch.getID(), name, connected };
             data.add(line);

@@ -80,6 +80,18 @@ public class Smartwatch {
         this.connector = new WatchConnector(this, connection);
     }
 
+    /**
+     * @return Whether or not the connection of the current watch is closed.
+     * This will return {@code true} if there is no connector or connection.
+     */
+    public boolean isClosed() {
+        if (this.connector == null) {
+            return true;
+        }
+
+        return this.connector.isClosed();
+    }
+
     public void addDatapoints(Collection<Datapoint> datapoint) {
         this.datapoints.addAll(datapoint);
     }
