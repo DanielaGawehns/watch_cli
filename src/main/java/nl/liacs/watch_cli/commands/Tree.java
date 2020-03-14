@@ -129,7 +129,7 @@ public class Tree implements Command {
 
     public static void printTree(@NotNull nl.liacs.watch_cli.Tree<Node> tree, @NotNull String prefix) {
         var data = tree.getData();
-        var val = String.join(", ", Arrays.stream(data.values).map(v -> v.getValue()).toArray(String[]::new));
+        var val = String.join(", ", Arrays.stream(data.values).map(v -> v.toString()).toArray(String[]::new));
         System.out.printf("%s%s : %s\n", prefix, data.key, val);
 
         for (var child : tree.getChildren()) {
