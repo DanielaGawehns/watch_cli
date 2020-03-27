@@ -4,6 +4,7 @@ plugins {
 	id 'com.github.johnrengelman.shadow' version '5.2.0'
 	//id "com.palantir.graal" version "0.6.0-102-ga30de19"
 	id "com.github.jk1.dependency-license-report" version "1.13"
+	id "com.github.ben-manes.versions" version "0.28.0"
 }
 
 group 'nl.liacs.watch_cli'
