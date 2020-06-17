@@ -50,6 +50,8 @@ public class Live implements Command {
 
         this.isRunning = true;
 
+        System.err.println("showing a live view of datapoints, press any key to stop.");
+
         for (var connector : connectors) {
             connector.addIncrementConsumer(point -> {
                 if (this.isRunning) {
