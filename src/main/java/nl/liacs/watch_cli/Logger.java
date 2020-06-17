@@ -49,7 +49,7 @@ public class Logger<T> {
     }
 
     /**
-     * Shotcut for logging with a info level.
+     * Shotcut for logging with an "info" level.
      * @param contents The coennts of the entry.
      */
     public void info(T contents) {
@@ -57,11 +57,19 @@ public class Logger<T> {
     }
 
     /**
-     * Shotcut for logging with a warning level.
+     * Shotcut for logging with a "warning" level.
      * @param contents The coennts of the entry.
      */
     public void warning(T contents) {
         this.log(Level.WARNING, contents);
+    }
+
+    /**
+     * Shotcut for logging with a "severe" level.
+     * @param contents The coennts of the entry.
+     */
+    public void error(T contents) {
+        this.log(Level.SEVERE, contents);
     }
 
     /**

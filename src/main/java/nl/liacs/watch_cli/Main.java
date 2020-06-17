@@ -2,6 +2,8 @@ package nl.liacs.watch_cli;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -161,6 +163,16 @@ public class Main {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        });
+
+        Main.connectionManager.addConnectionFailureConsumer(e -> {
+            // TODO: better exception handler, don't just dump the whole
+            // stacktrace on stderr.
+            e.printStackTrace();
+
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            logger.error(sw.toString());
         });
 
         var reader = makeReader();
