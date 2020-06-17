@@ -25,6 +25,8 @@ import nl.liacs.watch.protocol.types.MessageType;
 
 /**
  * Connects a {@link Smartwatch} with a {@link WrappedConnection}.
+ * The connection can be closed, while the {@link WatchConnector} is still
+ * active, in that case {@link isClosed} will be {@code false}.
  */
 public class WatchConnector implements Closeable {
     private final Smartwatch watch;

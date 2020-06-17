@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import nl.liacs.watch.protocol.server.WrappedConnection;
@@ -31,7 +32,7 @@ public class Tree implements Command {
     }
 
     @Nullable
-    private static CompletableFuture<String[]> getListing(WrappedConnection conn, String namespace) {
+    private static CompletableFuture<String[]> getListing(@NotNull WrappedConnection conn, @NotNull String namespace) {
         String key = namespace + ".list";
         if (namespace.isEmpty()) {
             key = "list";
@@ -48,7 +49,8 @@ public class Tree implements Command {
         }
     }
 
-    private static CompletableFuture<String> getType(WrappedConnection conn, String key) {
+    @NotNull
+    private static CompletableFuture<String> getType(@NotNull WrappedConnection conn, @NotNull String key) {
         if (key.isEmpty()) {
             key = "type";
         } else {
@@ -63,7 +65,7 @@ public class Tree implements Command {
     }
 
     @Nullable
-    private static CompletableFuture<MessageParameter[]> getValues(WrappedConnection conn, String key) {
+    private static CompletableFuture<MessageParameter[]> getValues(@NotNull WrappedConnection conn, @NotNull String key) {
         try {
             return conn.getValues(key);
         } catch (IOException e) {
@@ -72,7 +74,7 @@ public class Tree implements Command {
     }
 
     @Nullable
-    private static CompletableFuture<nl.liacs.watch_cli.Tree<Node>> getTree(WrappedConnection conn, String namespace) {
+    private static CompletableFuture<nl.liacs.watch_cli.Tree<Node>> getTree(@NotNull WrappedConnection conn, @NotNull String namespace) {
         var typeFut = Tree.getType(conn, namespace);
         if (typeFut == null) {
             return null;
@@ -125,7 +127,7 @@ public class Tree implements Command {
         return fut.thenApply(y -> resTree);
     }
 
-    public static void printTree(nl.liacs.watch_cli.Tree<Node> tree, String prefix) {
+    public static void printTree(@NotNull nl.liacs.watch_cli.Tree<Node> tree, @NotNull String prefix) {
         var data = tree.getData();
         var val = String.join(", ", Arrays.stream(data.values).map(v -> v.getValue()).toArray(String[]::new));
         System.out.printf("%s%s : %s\n", prefix, data.key, val);
