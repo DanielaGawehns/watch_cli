@@ -2,7 +2,12 @@
 
 ## How to compile
 
-You can compile the software to a packed JAR using Gradle:
+First, fetch the required submodules:
+```
+git submodule update --init --recursive
+```
+
+Then, you can compile the software to a packed JAR using Gradle:
 ```
 ./gradlew shadowJar
 ```
