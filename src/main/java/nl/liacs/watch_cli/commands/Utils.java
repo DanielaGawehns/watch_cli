@@ -44,7 +44,12 @@ class Utils {
     @NotNull
     static WrappedConnection getWatchConnection(String deviceIndex) {
         var connector = getConnector(deviceIndex);
-        return connector.getConnection();
+
+        var conn = connector.getConnection();
+        if (conn == null) {
+            throw new IllegalStateException("no connection with watch");
+        }
+        return conn;
     }
 
     @Nullable

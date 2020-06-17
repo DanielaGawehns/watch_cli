@@ -36,7 +36,12 @@ public class Live implements Command {
             connectors[i] = connector;
 
             try {
-                connector.getConnection().setValues("live.interval", new MessageParameterLong(interval));
+                var conn = connector.getConnection();
+                if (conn == null) {
+                    System.err.printf("watch with id %s not connected\n", deviceIds[i]);
+                    return;
+                }
+                conn.setValues("live.interval", new MessageParameterLong(interval));
             } catch (IOException e) {
                 System.out.println(e.getStackTrace());
                 System.exit(1);
