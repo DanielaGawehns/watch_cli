@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.jetbrains.annotations.NotNull;
 import org.jline.reader.EndOfFileException;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
@@ -70,6 +71,16 @@ public class Main {
         }
 
         commands.get(cmd).run(args);
+    }
+
+    public static void addWatch(@NotNull Smartwatch watch) {
+        watches.add(watch);
+        try {
+            database.addWatch(watch);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     public static void main(String[] args)
@@ -145,7 +156,7 @@ public class Main {
 
                     final var newWatch = new Smartwatch(uid, conn);
                     newWatch.setName(String.format("Watch %d", watches.size()));
-                    watches.add(newWatch);
+                    addWatch(newWatch);
                 });
             } catch (IOException e) {
                 e.printStackTrace();
