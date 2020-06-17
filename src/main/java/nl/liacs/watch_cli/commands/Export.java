@@ -54,6 +54,10 @@ public class Export implements Command {
         return "Export the datapoints of the watches with given IDs (or all watches if no IDs are given).\n  --format accepts 'tsv'.\n  --out is optional, if given the output will be written to the given path instead of stdout.";
     }
 
+    public String getUsage() {
+        return "--format <tsv> [watches...]";
+    }
+
     public boolean checkArguments(Arguments args) {
         return true;
     }

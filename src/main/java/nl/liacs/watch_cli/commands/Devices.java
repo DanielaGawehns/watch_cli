@@ -11,6 +11,10 @@ public class Devices implements Command {
         return "Show all devices that are known";
     }
 
+    public String getUsage() {
+        return "";
+    }
+
     public boolean checkArguments(Arguments args) {
         return args.isEmpty();
     }

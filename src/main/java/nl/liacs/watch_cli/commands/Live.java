@@ -12,6 +12,10 @@ public class Live implements Command {
         return "Show a live view of all enabled sensors with the given interval of the given devices.\nDevice IDs are comma delimited.";
     }
 
+    public String getUsage() {
+        return "<device ids...> <interval>";
+    }
+
     public boolean checkArguments(Arguments args) {
         return args.getRest().size() == 3;
     }

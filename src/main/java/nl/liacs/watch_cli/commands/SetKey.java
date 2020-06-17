@@ -9,6 +9,10 @@ public class SetKey implements Command {
         return "Set the value(s) for the given key for the given device";
     }
 
+    public String getUsage() {
+        return "<device id> <key name> <values...>";
+    }
+
     public boolean checkArguments(Arguments args) {
         // deviceId, key, args...
         return args.getRest().size() >= 3;

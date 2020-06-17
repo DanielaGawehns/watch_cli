@@ -12,6 +12,10 @@ public class GetKey implements Command {
         return "Retrieve the value(s) of the given key on the given device";
     }
 
+    public String getUsage() {
+        return "<device id> <key name>";
+    }
+
     public boolean checkArguments(Arguments args) {
         return args.getRest().size() == 2;
     }

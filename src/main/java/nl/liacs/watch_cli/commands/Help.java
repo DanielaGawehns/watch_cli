@@ -7,6 +7,10 @@ public class Help implements Command {
         return "Show program help";
     }
 
+    public String getUsage() {
+        return "[command]";
+    }
+
     public boolean checkArguments(Arguments args) {
         int count = args.getRest().size();
         return count == 0 || count == 1;
@@ -31,7 +35,7 @@ public class Help implements Command {
             return;
         }
 
-        System.out.printf("%s\n\n", rest.get(0));
+        System.out.printf("%s %s\n\n", rest.get(0), cmd.getUsage());
         System.out.println(cmd.getDescription());
     }
 }

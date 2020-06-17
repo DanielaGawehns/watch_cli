@@ -5,6 +5,10 @@ public class Exit implements Command {
         return "Exit";
     }
 
+    public String getUsage() {
+        return "";
+    }
+
     public boolean checkArguments(Arguments args) {
         return args.isEmpty();
     }

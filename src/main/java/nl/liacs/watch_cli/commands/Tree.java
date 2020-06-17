@@ -15,6 +15,10 @@ public class Tree implements Command {
         return "Show the full key-value store for the given device";
     }
 
+    public String getUsage() {
+        return "<device id>";
+    }
+
     private static class Node {
         String key;
         String type;

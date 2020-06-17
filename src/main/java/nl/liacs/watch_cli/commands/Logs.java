@@ -10,6 +10,10 @@ public class Logs implements Command {
         return "Show all (or the last n) entries from the system logs";
     }
 
+    public String getUsage() {
+        return "[tail count]";
+    }
+
     public boolean checkArguments(Arguments args) {
         var n = args.getRest().size();
         return n == 0 || n == 1;
