@@ -110,12 +110,16 @@ public class Main {
         ServerSocket server;
         var keystorePath = System.getProperty("keystore.path");
         if (keystorePath == null) {
-            logger.info("keystore path is not given, unencrypted connections will be used");
+            var msg = "keystore path is not given, unencrypted connections will be used";
+            logger.info(msg);
+            System.err.println(msg);
 
             server = Server.createServer(Constants.TcpPort);
             logger.info("running tcp server on port " + Constants.TcpPort);
         } else {
-            logger.info(String.format("keystore path is '%s', encrypted connections will be used", keystorePath));
+            var msg = String.format("keystore path is '%s', encrypted connections will be used", keystorePath);
+            logger.info(msg);
+            System.err.println(msg);
 
             var fs = new FileInputStream(keystorePath);
 
