@@ -1,9 +1,9 @@
 plugins {
 	id 'java'
 	id 'application'
-	id 'com.github.johnrengelman.shadow' version '5.2.0'
+	id 'com.github.johnrengelman.shadow' version '6.0.0'
 	//id "com.palantir.graal" version "0.6.0-102-ga30de19"
-	id "com.github.jk1.dependency-license-report" version "1.13"
+	id "com.github.jk1.dependency-license-report" version "1.14"
 	id "com.github.ben-manes.versions" version "0.28.0"
 }
 
@@ -19,10 +19,10 @@ repositories {
 dependencies {
 	//implementation 'info.picocli:picocli:4.2.0'
 
-	implementation group: 'org.jline', name: 'jline', version: '3.14.0'
-	implementation group: 'com.google.guava', name: 'guava', version: '28.2-jre'
+	implementation group: 'org.jline', name: 'jline', version: '3.14.1'
+	implementation group: 'com.google.guava', name: 'guava', version: '29.0-jre'
 	implementation group: 'com.github.freva', name: 'ascii-table', version: '1.1.0'
-	implementation 'org.xerial:sqlite-jdbc:3.30.1'
+	implementation 'org.xerial:sqlite-jdbc:3.31.1'
 
 	implementation 'junit:junit:4.13'
 
