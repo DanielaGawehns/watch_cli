@@ -35,7 +35,7 @@ class Utils {
 
         var connector = watch.getConnector();
         if (connector == null) {
-            var msg = String.format("no connection with watch '%s'", watch.getID());
+            var msg = String.format("no connector to watch with ID %s", watch.getID());
             throw new IllegalStateException(msg);
         }
         return connector;
@@ -47,7 +47,9 @@ class Utils {
 
         var conn = connector.getConnection();
         if (conn == null) {
-            throw new IllegalStateException("no connection with watch");
+            var watchId = getWatch(deviceIndex).getID();
+            var msg = String.format("no connection with watch with ID %s", watchId);
+            throw new IllegalStateException(msg);
         }
         return conn;
     }
