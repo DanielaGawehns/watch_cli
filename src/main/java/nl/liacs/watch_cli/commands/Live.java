@@ -17,7 +17,7 @@ public class Live implements Command {
     }
 
     public boolean checkArguments(Arguments args) {
-        return args.getRest().size() == 3;
+        return args.getRest().size() == 2;
     }
 
     public void run(Arguments args) {
