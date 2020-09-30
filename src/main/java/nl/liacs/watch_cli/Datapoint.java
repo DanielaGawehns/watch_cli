@@ -36,4 +36,14 @@ public class Datapoint {
     public double[] getData() {
         return this.data;
     }
+
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        for (var data : this.getData()) {
+            sb.append(data);
+            sb.append(", ");
+        }
+        return String.format("[%s] (%s) { %s }", this.getSensor(), this.getDate(), sb.toString());
+    }
 }
