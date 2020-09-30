@@ -107,9 +107,9 @@ public class WatchConnector implements Closeable {
 
                     var dataPoint = new Datapoint(sensor, date, values);
 
+                    var list = Collections.singletonList(dataPoint);
+                    watch.addDatapoints(list);
                     if (item.type == MessageType.PLAYBACK) {
-                        var list = Collections.singletonList(dataPoint);
-                        watch.addDatapoints(list);
                     } else {
                         for (var consumer : this.incrementConsumers) {
                             consumer.accept(dataPoint);
