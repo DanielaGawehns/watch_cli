@@ -100,4 +100,10 @@ public class Smartwatch {
     public List<Datapoint> getDatapoints() {
         return Collections.unmodifiableList(this.datapoints);
     }
+
+    public List<Datapoint> getSortedDatapoints() {
+        var points = (ArrayList<Datapoint>) this.datapoints.clone();
+        points.sort((a, b) -> a.getInstant().compareTo(b.getInstant()));
+        return points;
+    }
 }

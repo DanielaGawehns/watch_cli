@@ -23,7 +23,7 @@ public class Export implements Command {
 
             ps.println("Watch UID\tSensor\tDate\tData...");
             for (var watch : watches) {
-                var datapoints = watch.getDatapoints();
+                var datapoints = watch.getSortedDatapoints();
                 for (var point : datapoints) {
                     ps.print(watch.getUID());
                     ps.print('\t');
