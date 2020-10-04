@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import nl.liacs.watch.protocol.server.WrappedConnection;
+import nl.liacs.watch.protocol.types.Datapoint;
 
 /**
  * Smartwatch represents a watch device.

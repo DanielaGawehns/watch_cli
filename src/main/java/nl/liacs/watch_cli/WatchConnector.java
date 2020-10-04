@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import nl.liacs.watch.protocol.server.WrappedConnection;
+import nl.liacs.watch.protocol.types.Datapoint;
 import nl.liacs.watch.protocol.types.Message;
 import nl.liacs.watch.protocol.types.MessageParameter;
 import nl.liacs.watch.protocol.types.MessageParameterString;
@@ -98,26 +99,29 @@ public class WatchConnector implements Closeable {
                     var sensor = item.parameters[0].asString().getValue();
 
                     var dateValue = item.parameters[1].asLong().getValue();
-                    var date = LocalDateTime.ofInstant(Instant.ofEpochMilli(dateValue), ZoneOffset.UTC);
+                    var instant = Instant.ofEpochMilli(dateValue);
 
                     var values = Arrays.stream(item.parameters)
                         .skip(2)
                         .mapToDouble((param) -> param.asDouble().getValue())
                         .toArray();
 
-                    var dataPoint = new Datapoint(sensor, date, values);
+                    var datapoint = new Datapoint(sensor, instant, values);
 
                     if (item.type == MessageType.PLAYBACK) {
-                        var list = Collections.singletonList(dataPoint);
-                        watch.addDatapoints(list);
+                        Main.logger.warning("received unrequested PLAYBACK message, ignoring");
                     } else {
                         for (var consumer : this.incrementConsumers) {
-                            consumer.accept(dataPoint);
+                            consumer.accept(datapoint);
                         }
                     }
 
                     break;
                 }
+
+                case GET_PLAYBACK:
+                    item.makeReply(400, "GET_PLAYBACK is only host -> watch");
+                    break;
 
                 case PING:
                 case REPLY:

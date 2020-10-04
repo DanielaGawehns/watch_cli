@@ -33,7 +33,7 @@ public class Export implements Command {
                     ps.print('\t');
                     ps.print(point.getSensor());
                     ps.print('\t');
-                    ps.print(point.getDate().toString());
+                    ps.print(point.getInstant().toString());
 
                     var data = point.getData();
                     for (int i = 0; i < data.length; i++) {

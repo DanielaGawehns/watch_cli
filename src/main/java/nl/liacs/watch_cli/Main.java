@@ -26,6 +26,7 @@ import nl.liacs.watch.protocol.server.ConnectionManager;
 import nl.liacs.watch.protocol.tcpserver.SSLServer;
 import nl.liacs.watch.protocol.tcpserver.Server;
 import nl.liacs.watch.protocol.types.Constants;
+import nl.liacs.watch.protocol.types.Datapoint;
 import nl.liacs.watch_cli.commands.Arguments;
 import nl.liacs.watch_cli.commands.Command;
 import nl.liacs.watch_cli.commands.Devices;
