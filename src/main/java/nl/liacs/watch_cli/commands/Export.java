@@ -29,7 +29,7 @@ public class Export implements Command {
             for (var watch : watches) {
                 var datapoints = watch.getDatapoints();
                 for (var point : datapoints) {
-                    ps.print(watch.getID());
+                    ps.print(watch.getUID());
                     ps.print('\t');
                     ps.print(point.getSensor());
                     ps.print('\t');

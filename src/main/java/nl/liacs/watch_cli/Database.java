@@ -84,7 +84,7 @@ class Database {
         var command = "INSERT INTO smartwatch(id, name) VALUES(?, ?)";
 
         var stmt = this.connection.prepareStatement(command);
-        stmt.setString(1, watch.getID());
+        stmt.setString(1, watch.getUID());
         stmt.setString(2, watch.getName());
         stmt.executeUpdate();
     }

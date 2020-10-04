@@ -32,7 +32,7 @@ public class Devices implements Command {
 
             var connected = watch.isClosed() ? "no" : "yes";
 
-            String[] line = { Integer.toString(i), watch.getID(), name, connected };
+            String[] line = { Integer.toString(i), watch.getUID(), name, connected };
             data.add(line);
         }
 

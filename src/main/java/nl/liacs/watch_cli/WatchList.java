@@ -16,7 +16,7 @@ public class WatchList extends ArrayList<Smartwatch> {
      */
     private int findWithID(String id) {
         for (int i = 0; i < this.size(); i++) {
-            if (this.get(i).getID().equals(id)) {
+            if (this.get(i).getUID().equals(id)) {
                 return i;
             }
         }

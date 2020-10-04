@@ -15,16 +15,16 @@ import nl.liacs.watch.protocol.server.WrappedConnection;
  * Smartwatch represents a watch device.
  */
 public class Smartwatch {
-    private String id;
+    private String uid;
     private String name;
     private WatchConnector connector = null;
     private final ArrayList<Datapoint> datapoints = new ArrayList<>();
 
     /**
-     * @return The ID of the current watch.
+     * @return The UID of the current watch.
      */
-    public String getID() {
-        return this.id;
+    public String getUID() {
+        return this.uid;
     }
 
     /**
@@ -56,7 +56,7 @@ public class Smartwatch {
      * null.
      */
     Smartwatch(@NotNull String id, @Nullable WrappedConnection conn) {
-        this.id = id;
+        this.uid = id;
         if (conn != null) {
             try {
                 this.addConnection(conn);
