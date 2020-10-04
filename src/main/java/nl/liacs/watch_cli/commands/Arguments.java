@@ -2,6 +2,7 @@ package nl.liacs.watch_cli.commands;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.IllegalFormatException;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
@@ -63,6 +64,29 @@ public class Arguments {
         }
 
         return Integer.parseInt(key);
+    }
+
+    /**
+     * Get the value with the given {@code key} as a boolean value.
+     * @param key The key of the argument to return.
+     * @return The value of the argument with the given {@code key} converted to
+     * a boolean. Returns {@code null} when the given key was not found.
+     * @throws IllegalArgumentException When failing to convert the argument
+     * value to a boolean.
+     */
+    @Nullable
+    public Boolean getBoolean(String key) throws IllegalArgumentException {
+        var str = this.getString(key);
+
+        if (str == null) {
+            return null;
+        } else if (str.equals("true") || str.equals("1") || str.equals("yes") || str.equals("t") || str.equals("y")) {
+            return true;
+        } else if (str.equals("false") || str.equals("0") || str.equals("no") || str.equals("f") || str.equals("n")) {
+            return false;
+        }
+
+        throw new IllegalArgumentException();
     }
 
     public List<String> getRest() {

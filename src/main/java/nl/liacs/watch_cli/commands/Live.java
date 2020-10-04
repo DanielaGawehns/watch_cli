@@ -1,6 +1,7 @@
 package nl.liacs.watch_cli.commands;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import nl.liacs.watch.protocol.types.MessageParameterLong;
 import nl.liacs.watch_cli.WatchConnector;
@@ -9,11 +10,11 @@ public class Live implements Command {
     private boolean isRunning;
 
     public String getDescription() {
-        return "Show a live view of all enabled sensors with the given interval of the given devices.\nDevice IDs are comma delimited.";
+        return "Show a live view of all enabled sensors with the given interval of the given devices.\nDevice IDs are comma delimited.\nIf the store flag is set to true, the datapoints will be added to the watch datapoint list, which can be exported using the export command.";
     }
 
     public String getUsage() {
-        return "<device ids...> <interval>";
+        return "[--store=false] <device ids...> <interval>";
     }
 
     public boolean checkArguments(Arguments args) {
@@ -21,6 +22,9 @@ public class Live implements Command {
     }
 
     public void run(Arguments args) {
+        var _store = args.getBoolean("store");
+        final var store = _store != null ? _store : false;
+
         var deviceIds = args.getRest().get(0).split(",");
         var interval = Integer.parseInt(args.getRest().get(1));
 
@@ -52,10 +56,18 @@ public class Live implements Command {
 
         System.err.println("showing a live view of datapoints, press any key to stop.");
 
-        for (var connector : connectors) {
+        for (var i = 0; i < connectors.length; i++) {
+            var connector = connectors[i];
+            var watch = Utils.getWatch(deviceIds[i]);
+
             connector.addIncrementConsumer(point -> {
                 if (this.isRunning) {
                     System.out.printf("(%s) %s\n", watch.getUID(), point);
+
+                    if (store) {
+                        var list = Collections.singletonList(point);
+                        watch.addDatapoints(list);
+                    }
                 }
             });
         }
