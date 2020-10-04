@@ -105,9 +105,9 @@ public class Tree implements Command {
         var resTree = new nl.liacs.watch_cli.Tree<Node>(node);
 
         var treeFuts = new ArrayList<CompletableFuture<Void>>();
-        System.out.printf("len(items): %d\n", items.length);
+        //System.out.printf("len(items): %d\n", items.length);
         for (var key : items) {
-            System.out.printf("%s\n", key);
+            //System.out.printf("%s\n", key);
 
             String prefix = "";
             if (!namespace.isEmpty()) {
@@ -130,7 +130,13 @@ public class Tree implements Command {
     public static void printTree(@NotNull nl.liacs.watch_cli.Tree<Node> tree, @NotNull String prefix) {
         var data = tree.getData();
         var val = String.join(", ", Arrays.stream(data.values).map(v -> v.toString()).toArray(String[]::new));
-        System.out.printf("%s%s : %s\n", prefix, data.key, val);
+
+        var key = prefix.concat(data.key);
+        if (key.isEmpty()) {
+            key = "<root>";
+        }
+
+        System.out.printf("%s : %s\n", key, val);
 
         for (var child : tree.getChildren()) {
             Tree.printTree(child, prefix + "  ");

@@ -55,7 +55,7 @@ public class Live implements Command {
         for (var connector : connectors) {
             connector.addIncrementConsumer(point -> {
                 if (this.isRunning) {
-                    System.out.printf("%s\n", point);
+                    System.out.printf("(%s) %s\n", watch.getUID(), point);
                 }
             });
         }

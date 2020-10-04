@@ -107,18 +107,19 @@ public class Main {
 
         Main.database = new Database(null);
         Main.watches = Main.database.getAllWatches();
+        logger.info(String.format("loaded %d watches from database", Main.watches.size()));
 
         ServerSocket server;
         var keystorePath = System.getProperty("keystore.path");
         if (keystorePath == null) {
-            var msg = "keystore path is not given, unencrypted connections will be used";
+            var msg = "keystore path is not given, unencrypted connections will be used.";
             logger.info(msg);
             System.err.println(msg);
 
             server = Server.createServer(Constants.TcpPort);
             logger.info("running tcp server on port " + Constants.TcpPort);
         } else {
-            var msg = String.format("keystore path is '%s', encrypted connections will be used", keystorePath);
+            var msg = String.format("keystore path is '%s', encrypted connections will be used.", keystorePath);
             logger.info(msg);
             System.err.println(msg);
 

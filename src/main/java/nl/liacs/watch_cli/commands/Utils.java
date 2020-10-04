@@ -80,15 +80,13 @@ class Utils {
      * are given.
      */
     static List<Smartwatch> getWatchesFromIndicesOrAll(Collection<String> ids) {
-        var watches = ids
+        if (ids.isEmpty()) {
+            return Main.watches;
+        }
+
+        return ids
             .stream()
             .map(i -> Utils.getWatch(i))
             .collect(Collectors.toList());
-
-        if (watches.isEmpty()) {
-            watches = Main.watches;
-        }
-
-        return watches;
     }
 }

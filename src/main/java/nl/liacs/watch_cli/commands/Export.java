@@ -17,15 +17,11 @@ public class Export implements Command {
     }
 
     private class TSV implements Formatter {
-        TSV() {
-        }
-
+        TSV() {}
         public void format(Collection<Smartwatch> watches, OutputStream out) {
             var ps = new PrintStream(out);
 
-            // REVIEW: do we expect the data to be sorted?
-
-            ps.println("Watch ID\tSensor\tDate\tData...");
+            ps.println("Watch UID\tSensor\tDate\tData...");
             for (var watch : watches) {
                 var datapoints = watch.getDatapoints();
                 for (var point : datapoints) {
