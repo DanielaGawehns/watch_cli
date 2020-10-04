@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import nl.liacs.watch.protocol.types.Datapoint;
+
 /**
  * Database handles the storage and retrieval of persisted data.
  */
@@ -123,5 +125,30 @@ class Database {
         rs.close();
 
         return res;
+    }
+
+    public void addDatapoint(Datapoint point, String watchUid) throws SQLException {
+        var stmt = this.connection.prepareStatement(
+            "INSERT INTO datapoint(watch_id, `date`, amount) values(?, ?, ?)"
+        );
+        stmt.setString(1, watchUid);
+        stmt.setLong(2, point.getInstant().toEpochMilli());
+        stmt.setLong(3, point.getData().length);
+        stmt.executeUpdate();
+
+        var keys = stmt.getGeneratedKeys();
+        keys.next();
+        var id = keys.getLong(1);
+
+        for (int i = 0; i < point.getData().length; i++) {
+            stmt = this.connection.prepareStatement(
+                "INSERT INTO datapoint_entry(datapoint_id, i, type, value) values(?, ?, ?, ?)"
+            );
+            stmt.setLong(1, id);
+            stmt.setInt(2, i);
+            stmt.setInt(3, 0); // TODO
+            stmt.setDouble(4, point.getData()[i]); // TODO
+            stmt.executeUpdate();
+        }
     }
 }
