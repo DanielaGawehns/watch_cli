@@ -25,4 +25,4 @@ create table if not exists meta (
     key text not null primary key,
     value text
 );
-insert into meta(key, value) values("schema_version", "1");
+insert or ignore into meta(key, value) values("schema_version", "1");
