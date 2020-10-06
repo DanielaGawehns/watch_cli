@@ -102,8 +102,13 @@ public class Smartwatch {
     }
 
     public List<Datapoint> getSortedDatapoints() {
-        var points = (ArrayList<Datapoint>) this.datapoints.clone();
+        ArrayList<Datapoint> points;
+        synchronized (this.datapoints) {
+            points = new ArrayList<>(this.datapoints);
+        }
+
         points.sort((a, b) -> a.getInstant().compareTo(b.getInstant()));
+
         return points;
     }
 }
