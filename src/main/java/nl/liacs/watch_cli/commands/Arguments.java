@@ -17,7 +17,10 @@ public class Arguments {
         this.args = new HashMap<>();
         this.rest = new ArrayList<>();
 
+        // if skipping is true, all words will be regarded as non-flag
+        // arugments.  This happens after a `--`.
         boolean skipping = false;
+
         for (int i = 0; i < raw.size(); i++) {
             var arg = raw.get(i);
             if (arg.isBlank()) {
