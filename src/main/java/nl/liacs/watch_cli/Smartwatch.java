@@ -94,11 +94,17 @@ public class Smartwatch {
     }
 
     public void addDatapoints(Collection<Datapoint> datapoint) {
-        this.datapoints.addAll(datapoint);
+        synchronized (this.datapoints) {
+            this.datapoints.addAll(datapoint);
+        }
     }
 
     public List<Datapoint> getDatapoints() {
-        return Collections.unmodifiableList(this.datapoints);
+        ArrayList<Datapoint> points;
+        synchronized (this.datapoints) {
+            points = new ArrayList<>(this.datapoints);
+        }
+        return points;
     }
 
     public List<Datapoint> getSortedDatapoints() {
