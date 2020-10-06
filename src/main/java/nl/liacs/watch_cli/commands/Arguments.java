@@ -20,6 +20,10 @@ public class Arguments {
         boolean skipping = false;
         for (int i = 0; i < raw.size(); i++) {
             var arg = raw.get(i);
+            if (arg.isBlank()) {
+                continue;
+            }
+
             if (!skipping && arg.equals("--")) {
                 skipping = true;
                 continue;
