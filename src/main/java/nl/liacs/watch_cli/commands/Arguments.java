@@ -20,17 +20,27 @@ public class Arguments {
         boolean skipping = false;
         for (int i = 0; i < raw.size(); i++) {
             var arg = raw.get(i);
+            if (!skipping && arg.equals("--")) {
+                skipping = true;
+                continue;
+            } else if (!skipping && arg.startsWith("--")) {
+                if (arg.contains("=")) {
+                    // delimited by a '='
 
-            if (!skipping) {
-                if (arg.equals("--")) {
-                    skipping = true;
-                    continue;
-                } else if (arg.startsWith("--")) {
+                    String[] splitted = arg.split("=");
+                    String key = splitted[0].substring(2);
+                    String value = splitted[1];
+                    this.args.put(key, value);
+                } else {
+                    // delimited by whitespace
+
                     String key = arg.substring(2);
-                    this.args.put(key, raw.get(i + 1));
+                    String value = raw.get(i + 1);
+                    this.args.put(key, value);
                     i++;
-                    continue;
                 }
+
+                continue;
             }
 
             this.rest.add(arg);
