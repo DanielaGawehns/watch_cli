@@ -51,7 +51,7 @@ When you have created a key store you can now create a certificate.
 It is up to you if you want a certificate for every watch or for every set of watches, however, the first is preferable.
 The certificate is once created with a single shell command:
 ```
-keytool --export --rfc --file watch.pem --keystore keystore.jks
+keytool --export --rfc --file watch.pem --keystore keystore.jks --alias store
 ```
 
 This command creates a certificate named `watch.pem` in the current directory, using the key store `keystore.jks`.
