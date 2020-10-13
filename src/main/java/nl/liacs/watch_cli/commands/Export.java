@@ -16,6 +16,7 @@ public class Export implements Command {
         void format(Collection<Smartwatch> watches, OutputStream out);
     }
 
+    // TODO: escape strings that contain a tab char.
     private class TSV implements Formatter {
         TSV() {}
         public void format(Collection<Smartwatch> watches, OutputStream out) {
@@ -45,13 +46,43 @@ public class Export implements Command {
         }
     }
 
+    // TODO: escape strings that contain a comma char.
+    private class CSV implements Formatter {
+        CSV() {}
+        public void format(Collection<Smartwatch> watches, OutputStream out) {
+            var ps = new PrintStream(out);
+
+            ps.println("Watch UID,Sensor,Date,Data...");
+            for (var watch : watches) {
+                var datapoints = watch.getSortedDatapoints();
+                for (var point : datapoints) {
+                    ps.print(watch.getUID());
+                    ps.print(',');
+                    ps.print(point.getSensor());
+                    ps.print(',');
+                    ps.print(point.getInstant().toString());
+
+                    var data = point.getData();
+                    for (int i = 0; i < data.length; i++) {
+                        ps.print(',');
+                        ps.print(data[i]);
+                    }
+
+                    ps.println();
+                }
+            }
+
+            ps.flush();
+        }
+    }
+
 
     public String getDescription() {
-        return "Export the datapoints of the watches with given IDs (or all watches if no IDs are given).\n  --format accepts 'tsv'.\n  --out is optional, if given the output will be written to the given path instead of stdout.";
+        return "Export the datapoints of the watches with given IDs (or all watches if no IDs are given).\n  --format accepts 'tsv' or 'csv'.\n  --out is optional, if given the output will be written to the given path instead of stdout.";
     }
 
     public String getUsage() {
-        return "--format <tsv> [watches...]";
+        return "--format <tsv|csv> [watches...]";
     }
 
     public boolean checkArguments(Arguments args) {
@@ -67,6 +98,8 @@ public class Export implements Command {
         Formatter formatter;
         if (format.equals("tsv")) {
             formatter = new TSV();
+        } else if (format.equals("csv")) {
+            formatter = new CSV();
         } else if (format.isBlank()) {
             System.err.println("--format is required");
             return;
