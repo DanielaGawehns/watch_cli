@@ -29,11 +29,11 @@ public class Retrieve implements Command {
         var begin
             = startRaw == null
             ? Instant.ofEpochMilli(Long.MIN_VALUE)
-            : Instant.parse(startRaw);
+            : Utils.parseInstant(startRaw);
         var end
             = endRaw == null
             ? Instant.ofEpochMilli(Long.MAX_VALUE)
-            : Instant.parse(endRaw);
+            : Utils.parseInstant(endRaw);
 
         var futures = deviceIds.stream()
             .map(id -> {

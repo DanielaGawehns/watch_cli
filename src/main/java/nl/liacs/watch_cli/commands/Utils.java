@@ -1,9 +1,12 @@
 package nl.liacs.watch_cli.commands;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+
+import com.github.sisyphsu.dateparser.DateParserUtils;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -88,5 +91,15 @@ class Utils {
             .stream()
             .map(i -> Utils.getWatch(i))
             .collect(Collectors.toList());
+    }
+
+    /**
+     * Parses the given {@code String} into a {@code Instant}.
+     * @param str The string to convert to an {@code Instant}.
+     * @return The given string converted to an {@code Instant}.
+     */
+    static Instant parseInstant(String str) {
+        var offsetDateTime = DateParserUtils.parseOffsetDateTime(str);
+        return offsetDateTime.toInstant();
     }
 }
